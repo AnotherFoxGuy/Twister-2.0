@@ -1,0 +1,7 @@
+<Model name="control-panel" geometry="models/control-panel/control-panel.geo">
+
+	<Mesh name="panel" material="models/control-panel/Box.material.xml" batchStart="0" batchCount="96" vertRStart="0" vertREnd="51">
+		<Mesh name="#panel" material="models/control-panel/Panel.material.xml" batchStart="96" batchCount="6" vertRStart="52" vertREnd="55" />
+		<Mesh name="#panel" material="models/control-panel/Display.material.xml" batchStart="102" batchCount="6" vertRStart="56" vertREnd="59" />
+	</Mesh>
+</Model>
