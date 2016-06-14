@@ -72,12 +72,16 @@ bool Application::init() {
     _panelMatRes = h3dAddResource(H3DResTypes::Material, "overlays/panel.material.xml", 0);
     _logoMatRes = h3dAddResource(H3DResTypes::Material, "overlays/logo.material.xml", 0);
     // Environment
-    H3DRes envRes = h3dAddResource(H3DResTypes::SceneGraph, "models/sphere/sphere.scene.xml", 0);
+    H3DRes sphereRes = h3dAddResource(H3DResTypes::SceneGraph, "models/sphere/sphere.scene.xml", 0);
+    // Mats
+    _onMatRes = h3dAddResource(H3DResTypes::Material, "materials/on.material.xml", 0);
+    _offMatRes = h3dAddResource(H3DResTypes::Material, "materials/off.material.xml", 0);
+    _idleMatRes = h3dAddResource(H3DResTypes::Material, "materials/idle.material.xml", 0);
 
-    H3DRes panelRes = h3dAddResource(H3DResTypes::SceneGraph, "models/control-panel/control-panel.scene.xml", 0);
+    H3DRes panelRes = h3dAddResource(H3DResTypes::SceneGraph, "models/controlpanel/controlpanel.scene.xml", 0);
 
     // Skybox
-    H3DRes skyBoxRes = h3dAddResource( H3DResTypes::SceneGraph, "models/skybox/skybox.scene.xml", 0 );
+    H3DRes skyBoxRes = h3dAddResource(H3DResTypes::SceneGraph, "models/skybox/skybox.scene.xml", 0);
 
 
     // Load resources
@@ -90,16 +94,36 @@ bool Application::init() {
 
     //h3dSetNodeParamI( _cam, H3DCamera::OccCullingI, 1 );
     // Add environment
-    H3DNode env = h3dAddNodes(H3DRootNode, envRes);
+    H3DNode env = h3dAddNodes(H3DRootNode, sphereRes);
     h3dSetNodeTransform(env, 0, -20, 0, 0, 0, 0, 20, 20, 20);
+
     //
     _panel = h3dAddNodes(H3DRootNode, panelRes);
     h3dSetNodeTransform(_panel, 0, 0, 0, 0, 0, 0, 1, 1, 1);
 
+    int r = 0;
+    for (float i = -1.4; i <= 1.4; i+=0.5f) {
+        if (r == 3) i += 0.27;
+        r++;
+        H3DNode test1 = h3dAddNodes(H3DRootNode, sphereRes);
+        h3dSetNodeTransform(test1, i, 1, 0.75, 0, 0, 0, 0.1, 0.1, 0.1);
+
+        H3DNode test2 = h3dAddNodes(H3DRootNode, sphereRes);
+        h3dSetNodeTransform(test2, i, 1, 1.2, 0, 0, 0, 0.1, 0.1, 0.1);
+
+        h3dFindNodes(test1, "Sphere01", H3DNodeTypes::Mesh);
+        h3dSetNodeParamI(h3dGetNodeFindResult(0), H3DMesh::MatResI, _onMatRes);
+
+        h3dFindNodes(test2, "Sphere01", H3DNodeTypes::Mesh);
+        h3dSetNodeParamI(h3dGetNodeFindResult(0), H3DMesh::MatResI, _offMatRes);
+
+
+    }
+
     // Add skybox
-    H3DNode sky = h3dAddNodes( H3DRootNode, skyBoxRes );
-    h3dSetNodeTransform( sky, 0, 0, 0, 0, 0, 0, 210, 50, 210 );
-    h3dSetNodeFlags( sky, H3DNodeFlags::NoCastShadow, true );
+    H3DNode sky = h3dAddNodes(H3DRootNode, skyBoxRes);
+    h3dSetNodeTransform(sky, 0, 0, 0, 0, 0, 0, 210, 50, 210);
+    h3dSetNodeFlags(sky, H3DNodeFlags::NoCastShadow, true);
 
     // Add light source
     H3DNode light = h3dAddLightNode(H3DRootNode, "Light1", 0, "LIGHTING", "SHADOWMAP");
@@ -216,6 +240,13 @@ void Application::keyStateHandler() {
         _statMode += 1;
         if (_statMode > H3DUTMaxStatMode) _statMode = 0;
     }
+
+    if (_keys['E'] && !_prevKeys['E'])
+    {
+
+
+    }
+
 }
 
 

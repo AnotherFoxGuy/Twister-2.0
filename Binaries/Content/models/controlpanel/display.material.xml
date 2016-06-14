@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Material>
+  <Shader source="shaders/model.shader" />
+  <ShaderFlag name="DisplayMater" />
+  <Sampler name="albedoMap" map="models/controlpanel/side.jpg" />
+</Material>
